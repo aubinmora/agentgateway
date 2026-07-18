@@ -1499,6 +1499,11 @@ pub(crate) fn backend_with_policies_from_proto(
 						path_override: provider_config.path_override.as_ref().map(strng::new),
 						path_prefix: provider_config.path_prefix.as_ref().map(strng::new),
 						inline_policies: pols,
+						allowed_models: provider_config
+							.allowed_models
+							.iter()
+							.map(strng::new)
+							.collect(),
 					};
 					local_provider_group.push((provider_name, np));
 				}
@@ -4227,6 +4232,7 @@ mod tests {
 							project_id: "my-project".to_string(),
 						})),
 						inline_policies: vec![],
+						allowed_models: vec![],
 					}],
 				}],
 			})),
@@ -4271,6 +4277,7 @@ mod tests {
 							project_id: "my-project".to_string(),
 						})),
 						inline_policies: vec![],
+						allowed_models: vec![],
 					}],
 				}],
 			})),
@@ -4333,6 +4340,7 @@ mod tests {
 							provider_override: None,
 						})),
 						inline_policies: vec![],
+						allowed_models: vec![],
 					}],
 				}],
 			})),

@@ -2337,6 +2337,20 @@ async fn make_backend_call(
 							llm_request.streaming,
 						);
 					});
+					// Enforce the provider's model allowlist, if configured. Reject here,
+					// before the upstream call, so a disallowed model is never sent nor billed.
+					if !llm.model_allowed(llm_request.request_model.as_str()) {
+						return Ok(
+							::http::Response::builder()
+								.status(::http::StatusCode::FORBIDDEN)
+								.header(::http::header::CONTENT_TYPE, "application/json")
+								.body(http::Body::from(format!(
+									"{{\"error\":{{\"message\":\"model '{}' is not allowed on this backend\",\"type\":\"invalid_request_error\",\"code\":\"model_not_allowed\"}}}}",
+									llm_request.request_model
+								)))
+								.expect("model not allowed response is valid"),
+						);
+					}
 					// If a user doesn't configure explicit overrides for connecting to a provider, setup default
 					// paths, TLS, etc.
 					llm

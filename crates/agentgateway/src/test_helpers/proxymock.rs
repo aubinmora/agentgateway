@@ -226,6 +226,7 @@ pub fn custom_llm_backend_with_formats(
 		path_prefix: None,
 		tokenize: false,
 		inline_policies: vec![],
+		allowed_models: Default::default(),
 	};
 	let providers = EndpointSet::new(vec![vec![(provider.name.clone(), provider)]]);
 	Backend::AI(

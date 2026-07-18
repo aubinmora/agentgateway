@@ -1575,6 +1575,7 @@ impl LocalAIBackend {
 						path_prefix: p.path_prefix,
 						tokenize: p.tokenize,
 						inline_policies: policies,
+						allowed_models: Default::default(),
 					},
 				));
 			}
@@ -4364,6 +4365,7 @@ async fn convert_llm_config(
 			path_prefix: p.path_prefix,
 			tokenize: p.tokenize,
 			inline_policies: pols,
+			allowed_models: Default::default(),
 		};
 		let resolved_provider = named_provider.clone();
 

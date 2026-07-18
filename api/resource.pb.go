@@ -14890,6 +14890,7 @@ type AIBackend_Provider struct {
 	//	*AIBackend_Provider_Custom
 	Provider       isAIBackend_Provider_Provider `protobuf_oneof:"provider"`
 	InlinePolicies []*BackendPolicySpec          `protobuf:"bytes,10,rep,name=inline_policies,json=inlinePolicies,proto3" json:"inline_policies,omitempty"`
+	AllowedModels  []string                      `protobuf:"bytes,16,rep,name=allowed_models,json=allowedModels,proto3" json:"allowed_models,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -15041,6 +15042,13 @@ func (x *AIBackend_Provider) GetCustom() *AIBackend_Custom {
 func (x *AIBackend_Provider) GetInlinePolicies() []*BackendPolicySpec {
 	if x != nil {
 		return x.InlinePolicies
+	}
+	return nil
+}
+
+func (x *AIBackend_Provider) GetAllowedModels() []string {
+	if x != nil {
+		return x.AllowedModels
 	}
 	return nil
 }

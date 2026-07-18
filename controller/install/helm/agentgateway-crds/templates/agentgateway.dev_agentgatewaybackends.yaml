@@ -388,6 +388,17 @@ spec:
                                 maxLength: 1024
                                 minLength: 1
                                 type: string
+                              allowedModels:
+                                description: |-
+                                  Allowlist of model names accepted for this provider. When empty (the
+                                  default), any model is accepted. When set, a request whose model is not in
+                                  the list is rejected with `403` before the request is sent upstream, so a
+                                  disallowed model is never billed. Model names are matched exactly.
+                                items:
+                                  type: string
+                                maxItems: 64
+                                type: array
+                                x-kubernetes-list-type: set
                               pathPrefix:
                                 description: |-
                                   Overrides the default base path prefix, such as `/v1`, for upstream requests.
@@ -10749,6 +10760,17 @@ spec:
                         maxLength: 1024
                         minLength: 1
                         type: string
+                      allowedModels:
+                        description: |-
+                          Allowlist of model names accepted for this provider. When empty (the
+                          default), any model is accepted. When set, a request whose model is not in
+                          the list is rejected with `403` before the request is sent upstream, so a
+                          disallowed model is never billed. Model names are matched exactly.
+                        items:
+                          type: string
+                        maxItems: 64
+                        type: array
+                        x-kubernetes-list-type: set
                       pathPrefix:
                         description: |-
                           Overrides the default base path prefix, such as `/v1`, for upstream requests.

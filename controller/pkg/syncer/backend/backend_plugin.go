@@ -477,6 +477,10 @@ func translateLLMProvider(ctx plugins.PolicyCtx, namespace string, llm *agentgat
 		provider.PathPrefix = &llm.PathPrefix
 	}
 
+	if len(llm.AllowedModels) > 0 {
+		provider.AllowedModels = llm.AllowedModels
+	}
+
 	// Extract auth token and model based on provider
 	if llm.OpenAI != nil {
 		provider.Provider = &api.AIBackend_Provider_Openai{

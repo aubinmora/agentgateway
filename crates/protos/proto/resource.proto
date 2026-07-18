@@ -1698,6 +1698,10 @@ message AIBackend {
       Custom custom = 15;
     }
     repeated BackendPolicySpec inline_policies = 10;
+    // Optional allowlist of model names accepted for this provider. When empty,
+    // any model is accepted. When set, a request whose model is not in the list
+    // is rejected before the upstream call.
+    repeated string allowed_models = 16;
   }
   message ProviderGroup {
     repeated Provider providers = 1;

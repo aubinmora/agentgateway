@@ -1630,3 +1630,26 @@ fn fixed_providers_classify_by_family() {
 		CacheTokenConvention::InputIncludesCache,
 	);
 }
+
+#[test]
+fn model_allowlist_permits_only_listed_models() {
+	let mk = |allowed: &[&str]| NamedAIProvider {
+		name: "anthropic".into(),
+		provider: AIProvider::Anthropic(anthropic::Provider { model: None }),
+		provider_backend: None,
+		host_override: None,
+		path_override: None,
+		path_prefix: None,
+		tokenize: false,
+		inline_policies: vec![],
+		allowed_models: allowed.iter().map(|s| strng::new(*s)).collect(),
+	};
+	// Empty allowlist permits any model.
+	assert!(mk(&[]).model_allowed("claude-opus-4-8"));
+	// Non-empty allowlist permits only listed models, matched exactly.
+	let p = mk(&["claude-sonnet-5", "claude-haiku-4-5"]);
+	assert!(p.model_allowed("claude-sonnet-5"));
+	assert!(p.model_allowed("claude-haiku-4-5"));
+	assert!(!p.model_allowed("claude-opus-4-8"));
+	assert!(!p.model_allowed("claude-sonnet"));
+}

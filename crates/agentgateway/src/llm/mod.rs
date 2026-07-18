@@ -105,6 +105,22 @@ pub struct NamedAIProvider {
 	pub tokenize: bool,
 	#[serde(default, skip_serializing_if = "Vec::is_empty")]
 	pub inline_policies: Vec<BackendTrafficPolicy>,
+	/// Allowlist of model names accepted for this provider. When empty, any model is accepted.
+	/// When set, a request whose model is not in the list is rejected before the upstream call.
+	#[serde(default, skip_serializing_if = "Vec::is_empty")]
+	pub allowed_models: Vec<Strng>,
+}
+
+impl NamedAIProvider {
+	/// Returns true if the given request model is permitted by this provider's allowlist.
+	/// An empty allowlist permits any model.
+	pub fn model_allowed(&self, request_model: &str) -> bool {
+		self.allowed_models.is_empty()
+			|| self
+				.allowed_models
+				.iter()
+				.any(|m| m.as_str() == request_model)
+	}
 }
 
 #[apply(schema!)]

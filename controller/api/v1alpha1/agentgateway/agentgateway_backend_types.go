@@ -279,6 +279,16 @@ type LLMProvider struct {
 	// Only supported for OpenAI and Anthropic providers.
 	// +optional
 	PathPrefix LongString `json:"pathPrefix,omitempty"`
+
+	// Allowlist of model names accepted for this provider. When empty (the
+	// default), any model is accepted. When set, a request whose model is not in
+	// the list is rejected with `403` before the request is sent upstream, so a
+	// disallowed model is never billed. Model names are matched exactly.
+	//
+	// +kubebuilder:validation:MaxItems=64
+	// +listType=set
+	// +optional
+	AllowedModels []string `json:"allowedModels,omitempty"`
 }
 
 // References a namespace-local backend resource.
